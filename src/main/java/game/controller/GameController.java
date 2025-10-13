@@ -1,139 +1,94 @@
 package game.controller;
 
-import game.model.*;
-import game.view.GameMenu;
+import game.model.Food;
+import game.model.Snake;
 import game.view.GameView;
-import javafx.animation.AnimationTimer;
+import game.view.GameMenu;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
-/**
- * Контроллер игры: логика + управление потоком отрисовки.
- */
 public class GameController {
+
     private Stage stage;
+    private Scene scene;
 
     private Snake snake;
     private Food food;
     private GameView view;
     private GameMenu menu;
+    private InputHandler input;
+    private GameLoop gameLoop;
 
-    private Direction direction = Direction.RIGHT;
     private boolean gameOver = false;
 
-    private long lastUpdate = 0;
-    private int score = 0;
-    private int highScore = 0;
-
-    private AnimationTimer timer;
-
     public GameController(Stage stage) {
-
         this.stage = stage;
-        initGame(); // создаём модель и view
-        // создаём сцену на основе view
-        Scene scene = new Scene(view.getRoot());
-        // клавиатура
-        scene.setOnKeyPressed(e -> {
-            KeyCode code = e.getCode();
-            if (code == KeyCode.UP && direction != Direction.DOWN) direction = Direction.UP;
-            if (code == KeyCode.DOWN && direction != Direction.UP) direction = Direction.DOWN;
-            if (code == KeyCode.LEFT && direction != Direction.RIGHT) direction = Direction.LEFT;
-            if (code == KeyCode.RIGHT && direction != Direction.LEFT) direction = Direction.RIGHT;
 
-            // перезапуск по Enter
-            if (code == KeyCode.ENTER && gameOver) {
-                resetGame();
-            }
-        });
+        // создаём меню
+        menu = new GameMenu(GameView.GRID_WIDTH * GameView.TILE_SIZE,
+                GameView.GRID_HEIGHT * GameView.TILE_SIZE);
 
+        // создаём сцену один раз на основе меню
+        scene = new Scene(menu.getRoot());
         stage.setScene(scene);
         stage.setTitle("🐍 Snake Game");
         stage.show();
 
-        menu = new GameMenu(GameView.GRID_WIDTH, GameView.GRID_HEIGHT);
-        menu.setOnStart(() -> {
-            Snake snake = new Snake();
-            Food food = new Food();
-            food.spawn(snake);
-
-            view = new GameView(snake, food);
-
-            stage.getScene().setRoot(view.getRoot());
-            startGame(snake, food);
-        });
-
-        stage.getScene().setRoot(menu.getRoot());
+        // обработка нажатия кнопки Start
+        menu.setOnStart(this::startNewGame);
     }
 
-    // инициализация (создаёт новые объекты модели и view)
-    private void initGame() {
-        snake = new Snake();        // конструктор Snake должен добавлять стартовый сегмент
+    private void startNewGame() {
+        // создаём модели
+        snake = new Snake();
         food = new Food();
-        view = new GameView(snake, food);
-        food.spawn(snake);         // ставим еду в свободную клетку
-        direction = Direction.RIGHT;
+        food.spawn(snake);
         gameOver = false;
-        lastUpdate = 0;
-        score = 0;
-    }
 
-    // старт игрового цикла
-    public void startGame(Snake snake, Food food) {
-        this.snake = snake;
-        this.food = food;
+        // создаём view
+        view = new GameView(snake, food);
 
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (lastUpdate == 0) lastUpdate = now;
-                if (now - lastUpdate >= 200_000_000L) {
-                    update(); // работает с snake и food, которые уже созданы
-                    view.render(gameOver, score, highScore);
-                    lastUpdate = now;
-                }
-            }
-        };
-        timer.start();
-    }
+        // заменяем корень сцены на игровое поле
+        scene.setRoot(view.getRoot());
 
-    // сброс игры: создаём новую модель и обновляем корень сцены
-    private void resetGame() {
-        initGame();
-        // заменяем корень текущей сцены на новый view (чтобы отображение обновилось)
-        if (stage.getScene() != null) {
-            stage.getScene().setRoot(view.getRoot());
+        // создаём InputHandler на этой сцене
+        input = new InputHandler(scene);
+
+        // создаём и запускаем GameLoop
+        if (gameLoop != null) {
+            gameLoop.stop();
         }
-        // не трогаем highScore — он хранится между попытками
+
+        gameLoop = new GameLoop(this::update);
+        gameLoop.start();
     }
 
-    // основной апдейт логики
     private void update() {
-        if (gameOver) return;
-        if (snake == null || snake.getBody().isEmpty()) return; // защита
+        if (input == null) return; // защита от NPE
 
-        Point head = snake.getHead();
-        Point newHead = head.move(direction);
-
-        // столкновение со стеной или с телом
-        if (snake.checkCollision(newHead)) {
-            gameOver = true;
-            // обновляем рекорд при смерти
-            if (score > highScore) highScore = score;
+        if (gameOver) {
+            if (input.isRestartPressed()) {
+                startNewGame();
+            }
+            view.render(true, snake.getBody().size() - 1, 0);
             return;
         }
 
-        // проверяем: съели ли еду (до перемещения)
-        boolean ateFood = newHead.equals(food.getPosition());
+        var direction = input.getDirection();
+        var head = snake.getHead();
+        var newHead = head.move(direction);
 
-        // перемещаем змейку (метод должен добавлять голову и убирать хвост, если не съели)
+        if (snake.checkCollision(newHead)) {
+            gameOver = true;
+            view.render(true, snake.getBody().size() - 1, 0);
+            return;
+        }
+
+        boolean ateFood = newHead.equals(food.getPosition());
         snake.move(newHead, food);
 
-        if (ateFood) {
-            score++;
-            // спавним новую еду (snake уже обновлён, поэтому spawn исключит клетки змеи)
-            food.spawn(snake);
-        }
+        if (ateFood) food.spawn(snake);
+
+        view.render(false, snake.getBody().size() - 1, 0);
     }
 }

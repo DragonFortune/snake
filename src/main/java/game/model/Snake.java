@@ -1,10 +1,10 @@
 package game.model;
 
+import game.view.GameView;
+
 import java.util.LinkedList;
 
 public class Snake {
-    private static final int WIDTH = 20;
-    private static final int HEIGHT = 20;
 
     private final LinkedList<Point> body = new LinkedList<>();
 
@@ -22,7 +22,7 @@ public class Snake {
     }
 
     public boolean checkCollision(Point p) {
-        return p.x() < 0 || p.y() < 0 || p.x() >= WIDTH || p.y() >= HEIGHT || body.contains(p);
+        return p.x() < 0 || p.y() < 0 || p.x() >= GameView.GRID_WIDTH || p.y() >= GameView.GRID_HEIGHT || body.contains(p);
     }
 
     public Point getHead() {
