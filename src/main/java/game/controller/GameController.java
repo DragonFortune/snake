@@ -1,5 +1,6 @@
 package game.controller;
 
+import game.config.GameConfig;
 import game.model.Food;
 import game.model.Score;
 import game.model.Snake;
@@ -25,8 +26,8 @@ public class GameController {
     public GameController(Stage stage) {
         this.score = new Score();
         // создаём меню
-        GameMenu menu = new GameMenu(GameView.GRID_WIDTH * GameView.TILE_SIZE,
-                GameView.GRID_HEIGHT * GameView.TILE_SIZE);
+        GameMenu menu = new GameMenu(GameConfig.GRID_WIDTH * GameConfig.TILE_SIZE,
+                GameConfig.GRID_HEIGHT * GameConfig.TILE_SIZE);
 
         // создаём сцену один раз на основе меню
         scene = new Scene(menu.getRoot());

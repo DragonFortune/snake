@@ -1,5 +1,6 @@
 package game.view;
 
+import game.config.GameConfig;
 import game.model.Food;
 import game.model.GameTheme;
 import game.model.Snake;
@@ -19,13 +20,6 @@ import javafx.scene.text.TextAlignment;
  * Также отображает overlay при Game Over.
  */
 public class GameView {
-    public static final int GRID_WIDTH = 25;
-    public static final int GRID_HEIGHT = 25;
-    public static final int TILE_SIZE = 20;
-
-    private static final int CANVAS_WIDTH = GRID_WIDTH * TILE_SIZE;
-    private static final int CANVAS_HEIGHT = GRID_HEIGHT * TILE_SIZE;
-
     private final StackPane root = new StackPane();
     private final GraphicsContext gc;
 
@@ -35,7 +29,7 @@ public class GameView {
     private final UIRenderer uiRenderer;
 
     public GameView(GameTheme theme, Snake snake, Food food) {
-        Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
         this.gc = canvas.getGraphicsContext2D();
 
         this.snakeRenderer = new SnakeRenderer(snake, theme.getSnakeHead(), theme.getSnakeBody());
@@ -57,12 +51,12 @@ public class GameView {
      */
     public void render(boolean gameOver, int score, int highScore) {
         gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        gc.fillRect(0, 0, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
 
-        gridRenderer.render(gc, CANVAS_WIDTH,CANVAS_HEIGHT ,TILE_SIZE);
-        foodRenderer.render(gc, TILE_SIZE);
-        snakeRenderer.render(gc, TILE_SIZE);
-        uiRenderer.render(score, highScore, CANVAS_WIDTH, CANVAS_HEIGHT, gameOver);
+        gridRenderer.render(gc, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), GameConfig.TILE_SIZE);
+        foodRenderer.render(gc, GameConfig.TILE_SIZE);
+        snakeRenderer.render(gc, GameConfig.TILE_SIZE);
+        uiRenderer.render(score, highScore, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), gameOver);
     }
 
     public StackPane getRoot() {
