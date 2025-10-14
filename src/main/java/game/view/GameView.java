@@ -1,13 +1,11 @@
 package game.view;
 
 import game.config.GameConfig;
-import game.view.renderers.FoodRenderer;
-import game.view.renderers.GridRenderer;
-import game.view.renderers.SnakeRenderer;
-import game.view.renderers.UIRenderer;
+import game.view.renderers.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+
 /**
  * Отрисовка игрового поля. Рисует фон, сетку, еду, сегменты змейки и UI (Score / High score).
  * Также отображает overlay при Game Over.
@@ -15,11 +13,8 @@ import javafx.scene.paint.Color;
 public class GameView {
     private final StackPane root = new StackPane();
     private final GraphicsContext gc;
-
-    private final SnakeRenderer snakeRenderer;
-    private final FoodRenderer foodRenderer;
-    private final GridRenderer gridRenderer;
     private final UIRenderer uiRenderer;
+    private final RendererManager rendererManager = new RendererManager();
 
     public GameView(GraphicsContext gc,
                     SnakeRenderer snakeRenderer,
@@ -27,9 +22,9 @@ public class GameView {
                     GridRenderer gridRenderer,
                     UIRenderer uiRenderer) {
         this.gc = gc;
-        this.snakeRenderer = snakeRenderer;
-        this.foodRenderer = foodRenderer;
-        this.gridRenderer = gridRenderer;
+        rendererManager.add(gridRenderer);
+        rendererManager.add(foodRenderer);
+        rendererManager.add(snakeRenderer);
         this.uiRenderer = uiRenderer;
     }
 
@@ -44,10 +39,10 @@ public class GameView {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
 
-        gridRenderer.render(gc, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), GameConfig.TILE_SIZE);
-        foodRenderer.render(gc, GameConfig.TILE_SIZE);
-        snakeRenderer.render(gc, GameConfig.TILE_SIZE);
-        uiRenderer.render(score, highScore, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), gameOver);
+        rendererManager.renderAll(gc);
+
+        uiRenderer.updateState(score, highScore, gameOver);
+        uiRenderer.render(gc);
     }
 
     public StackPane getRoot() {

@@ -5,19 +5,31 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-public class UIRenderer {
-    private final GraphicsContext gc;
+public class UIRenderer implements Renderer{
+    private final int canvasWidth;
+    private final int canvasHeight;
 
-    public UIRenderer(GraphicsContext gc) {
-        this.gc = gc;
+    private int score;
+    private int highScore;
+    private boolean gameOver;
+
+    public UIRenderer(int canvasWidth, int canvasHeight) {
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
     }
 
-    public void render(int score, int highScore, int canvasWidth, int canvasHeight, boolean gameOver ) {
-        drawScore(score, highScore, canvasWidth);
-        drawOverlay(gameOver, canvasWidth, canvasHeight);
+    public void updateState(int score, int highScore, boolean gameOver) {
+        this.score = score;
+        this.highScore = highScore;
+        this.gameOver = gameOver;
     }
 
-    private void drawOverlay(boolean gameOver, int canvasWidth, int canvasHeight) {
+    public void render(GraphicsContext gc) {
+        drawScore(gc);
+        drawOverlay(gc);
+    }
+
+    private void drawOverlay(GraphicsContext gc) {
         if (gameOver) {
             gc.setFill(Color.color(0, 0, 0, 0.5));
             gc.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -34,7 +46,7 @@ public class UIRenderer {
         }
     }
 
-    private void drawScore (int score, int highScore, int canvasWidth) {
+    private void drawScore (GraphicsContext gc) {
         gc.setFill(Color.WHITE);
         gc.setFont(Font.font(16));
         gc.fillText("Score: " + score, 8, 18);

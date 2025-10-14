@@ -3,14 +3,20 @@ package game.view.renderers;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class GridRenderer {
+public class GridRenderer implements Renderer{
     private final Color color;
+    private final int canvasWidth;
+    private final int canvasHeight;
+    private final int tileSize;
 
-    public GridRenderer(Color color) {
+    public GridRenderer(Color color, int canvasWidth, int canvasHeight, int tileSize) {
         this.color = color;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.tileSize = tileSize;
     }
 
-    public void render(GraphicsContext gc, int canvasWidth, int canvasHeight, double tileSize) {
+    public void render(GraphicsContext gc) {
         gc.setStroke(color);
         gc.setLineWidth(0.5);
 

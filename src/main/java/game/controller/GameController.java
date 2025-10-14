@@ -56,14 +56,15 @@ public class GameController {
 
         // создаём view
         var theme = ThemeLoader.load("classic");
-//        view = new GameView(theme,snake, food);
+
         Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        SnakeRenderer snakeRenderer = new SnakeRenderer(snake, theme.getSnakeHead(), theme.getSnakeBody());
-        FoodRenderer foodRenderer = new FoodRenderer(food, theme.getFood());
-        GridRenderer gridRenderer = new GridRenderer(theme.getGridColor());
-        UIRenderer uiRenderer = new UIRenderer(gc);
+        SnakeRenderer snakeRenderer = new SnakeRenderer(snake, theme.getSnakeHead(), theme.getSnakeBody(), GameConfig.TILE_SIZE);
+        FoodRenderer foodRenderer = new FoodRenderer(food, theme.getFood(), GameConfig.TILE_SIZE);
+        GridRenderer gridRenderer = new GridRenderer(theme.getGridColor(), GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), GameConfig.TILE_SIZE);
+//        UIRenderer uiRenderer = new UIRenderer(gc);
+        UIRenderer uiRenderer = new UIRenderer(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
 
         view = new GameView(gc, snakeRenderer, foodRenderer, gridRenderer, uiRenderer);
         view.getRoot().getChildren().add(canvas);
