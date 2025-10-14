@@ -1,7 +1,9 @@
 package game.controller;
 
 import game.model.Food;
+import game.model.Score;
 import game.model.Snake;
+import game.utils.ThemeLoader;
 import game.view.GameView;
 import game.view.GameMenu;
 import javafx.scene.Scene;
@@ -9,23 +11,21 @@ import javafx.stage.Stage;
 
 public class GameController {
 
-    private Stage stage;
-    private Scene scene;
+    private final Scene scene;
 
     private Snake snake;
     private Food food;
     private GameView view;
-    private GameMenu menu;
     private InputHandler input;
+    private final Score score;
     private GameLoop gameLoop;
 
     private boolean gameOver = false;
 
     public GameController(Stage stage) {
-        this.stage = stage;
-
+        this.score = new Score();
         // создаём меню
-        menu = new GameMenu(GameView.GRID_WIDTH * GameView.TILE_SIZE,
+        GameMenu menu = new GameMenu(GameView.GRID_WIDTH * GameView.TILE_SIZE,
                 GameView.GRID_HEIGHT * GameView.TILE_SIZE);
 
         // создаём сцену один раз на основе меню
@@ -45,8 +45,11 @@ public class GameController {
         food.spawn(snake);
         gameOver = false;
 
+        score.reset();
+
         // создаём view
-        view = new GameView(snake, food);
+        var theme = ThemeLoader.load("classic");
+        view = new GameView(theme,snake, food);
 
         // заменяем корень сцены на игровое поле
         scene.setRoot(view.getRoot());
@@ -70,7 +73,7 @@ public class GameController {
             if (input.isRestartPressed()) {
                 startNewGame();
             }
-            view.render(true, snake.getBody().size() - 1, 0);
+            view.render(true, score.getScore(), score.getHighScore());
             return;
         }
 
@@ -80,15 +83,19 @@ public class GameController {
 
         if (snake.checkCollision(newHead)) {
             gameOver = true;
-            view.render(true, snake.getBody().size() - 1, 0);
+            score.updateHighScore();
+            view.render(true, score.getScore(), score.getHighScore());
             return;
         }
 
         boolean ateFood = newHead.equals(food.getPosition());
-        snake.move(newHead, food);
+        snake.move(input.getDirection(), food);
 
-        if (ateFood) food.spawn(snake);
+        if (ateFood) {
+            score.addPoint(10);
+            food.spawn(snake);
+        }
 
-        view.render(false, snake.getBody().size() - 1, 0);
+        view.render(false, score.getScore(), score.getHighScore());
     }
 }

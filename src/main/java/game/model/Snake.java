@@ -7,17 +7,22 @@ import java.util.LinkedList;
 public class Snake {
 
     private final LinkedList<Point> body = new LinkedList<>();
+    private Direction currentDirection = Direction.RIGHT;
 
     public Snake() {
         body.add(new Point(10, 10));
     }
 
-    public void move(Point newHead, Food food) {
-        body.addFirst(newHead);
-        if (newHead.equals(food.getPosition())) {
-            food.spawn(this);
-        } else {
-            body.removeLast();
+    public void move(Direction newDirection, Food food) {
+        if (newDirection != null && !newDirection.isOpposite(currentDirection)) {
+            currentDirection = newDirection;
+        }
+
+        Point newHead = getHead().move(currentDirection);
+        body.add(0, newHead);
+
+        if (!newHead.equals(food.getPosition())) {
+            body.remove(body.size() - 1);
         }
     }
 
@@ -32,4 +37,6 @@ public class Snake {
     public LinkedList<Point> getBody() {
         return body;
     }
+
+    public Direction getDirection() { return currentDirection; }
 }
