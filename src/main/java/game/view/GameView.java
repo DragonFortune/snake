@@ -22,10 +22,11 @@ public class GameView {
                     GridRenderer gridRenderer,
                     UIRenderer uiRenderer) {
         this.gc = gc;
-        rendererManager.add(gridRenderer);
-        rendererManager.add(foodRenderer);
-        rendererManager.add(snakeRenderer);
         this.uiRenderer = uiRenderer;
+        rendererManager.add(gridRenderer, 0);
+        rendererManager.add(foodRenderer, 1);
+        rendererManager.add(snakeRenderer, 2);
+        rendererManager.add(uiRenderer, 3);
     }
 
     /**
@@ -39,10 +40,9 @@ public class GameView {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
 
-        rendererManager.renderAll(gc);
-
         uiRenderer.updateState(score, highScore, gameOver);
-        uiRenderer.render(gc);
+
+        rendererManager.renderAll(gc);
     }
 
     public StackPane getRoot() {

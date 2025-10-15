@@ -2,19 +2,46 @@ package game.view.renderers;
 
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RendererManager {
-    private final List<Renderer> renderers = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(RendererManager.class.getName());
+    private final Map<Integer, List<Renderer>> layers = new TreeMap<>();
+    private final Set<Integer> disabledLayers = new HashSet<>();
 
-    public void add(Renderer renderer) {
-        renderers.add(renderer);
+    /**
+     * Добавляет новый рендерер в указанный слой.
+     *
+     * @param renderer экземпляр рендера
+     * @param layer номер слоя
+     */
+    public void add(Renderer renderer, int layer) {
+        layers.computeIfAbsent(layer, k -> new ArrayList<>()).add(renderer);
+    }
+
+    public void disableLayers(int layer) {
+        disabledLayers.add(layer);
+    }
+
+    public void enableLayer(int layer) {
+        disabledLayers.remove(layer);
     }
 
     public void renderAll (GraphicsContext gc) {
-        for (Renderer renderer : renderers) {
-            renderer.render(gc);
+        for (Map.Entry<Integer, List<Renderer>> entry : layers.entrySet()) {
+            int layer = entry.getKey();
+
+            if (disabledLayers.contains(layer)) continue;
+
+            for (Renderer r : entry.getValue()) {
+                try {
+                    r.render(gc);
+                } catch (Throwable e) {
+                    LOGGER.log(Level.WARNING, "Render failed for " + r);
+                }
+            }
         }
     }
 }
