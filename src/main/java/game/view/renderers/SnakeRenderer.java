@@ -5,18 +5,21 @@ import game.model.Snake;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class SnakeRenderer {
+public class SnakeRenderer implements Renderer{
     private final Snake snake;
     private final Image headImage;
     private final Image bodyImage;
+    private final int tileSize;
 
-    public SnakeRenderer(Snake snake, Image headImage, Image bodyImage) {
+    public SnakeRenderer(Snake snake, Image headImage, Image bodyImage, int tileSize) {
         this.snake = snake;
         this.headImage =headImage;
         this.bodyImage = bodyImage;
+        this.tileSize = tileSize;
     }
 
-    public void render(GraphicsContext gc, double tileSize) {
+    @Override
+    public void render(GraphicsContext gc) {
         for (int i = 0; i < snake.getBody().size(); i++) {
             var p = snake.getBody().get(i);
             double x = p.x() * tileSize;

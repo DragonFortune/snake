@@ -1,7 +1,6 @@
 package game.model;
 
-import static game.view.GameView.GRID_HEIGHT;
-import static game.view.GameView.GRID_WIDTH;
+import game.config.GameConfig;
 
 public record Point(int x, int y) {
     public Point move (Direction direction) {
@@ -16,10 +15,10 @@ public record Point(int x, int y) {
         }
 
         // оборачивание координат по краям
-        if (newX < 0) newX = GRID_WIDTH - 1;
-        if (newX >= GRID_WIDTH) newX = 0;
-        if (newY < 0) newY = GRID_HEIGHT - 1;
-        if (newY >= GRID_HEIGHT) newY = 0;
+        if (newX < 0) newX = GameConfig.GRID_WIDTH - 1;
+        if (newX >= GameConfig.GRID_WIDTH) newX = 0;
+        if (newY < 0) newY = GameConfig.GRID_HEIGHT - 1;
+        if (newY >= GameConfig.GRID_HEIGHT) newY = 0;
 
         return new Point(newX, newY);
     }

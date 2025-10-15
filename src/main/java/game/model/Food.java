@@ -1,5 +1,6 @@
 package game.model;
 
+import game.config.GameConfig;
 import game.view.GameView;
 
 import java.util.Random;
@@ -12,7 +13,7 @@ public class Food {
         Random random = new Random();
         Point p;
         do {
-            p = new Point(random.nextInt(GameView.GRID_WIDTH), random.nextInt(GameView.GRID_HEIGHT));
+            p = new Point(random.nextInt(GameConfig.GRID_WIDTH), random.nextInt(GameConfig.GRID_HEIGHT));
         } while (snake.getBody().contains(p));
         position = p;
     }

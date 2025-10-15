@@ -5,16 +5,18 @@ import game.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class FoodRenderer {
+public class FoodRenderer implements Renderer{
     private final Food food;
     private final Image foodImage;
+    private final int tileSize;
 
-    public FoodRenderer(Food food, Image foodImage) {
+    public FoodRenderer(Food food, Image foodImage, int tileSize) {
         this.food = food;
         this.foodImage = foodImage;
+        this.tileSize = tileSize;
     }
 
-    public void render(GraphicsContext gc, double tileSize) {
+    public void render(GraphicsContext gc) {
         Point f = food.getPosition();
         if (f != null) {
             double fx = f.x() * tileSize;

@@ -1,12 +1,19 @@
 package game.controller;
 
+import game.config.GameConfig;
 import game.model.Food;
 import game.model.Score;
 import game.model.Snake;
 import game.utils.ThemeLoader;
 import game.view.GameView;
 import game.view.GameMenu;
+import game.view.renderers.FoodRenderer;
+import game.view.renderers.GridRenderer;
+import game.view.renderers.SnakeRenderer;
+import game.view.renderers.UIRenderer;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
 public class GameController {
@@ -25,8 +32,8 @@ public class GameController {
     public GameController(Stage stage) {
         this.score = new Score();
         // создаём меню
-        GameMenu menu = new GameMenu(GameView.GRID_WIDTH * GameView.TILE_SIZE,
-                GameView.GRID_HEIGHT * GameView.TILE_SIZE);
+        GameMenu menu = new GameMenu(GameConfig.GRID_WIDTH * GameConfig.TILE_SIZE,
+                GameConfig.GRID_HEIGHT * GameConfig.TILE_SIZE);
 
         // создаём сцену один раз на основе меню
         scene = new Scene(menu.getRoot());
@@ -49,7 +56,18 @@ public class GameController {
 
         // создаём view
         var theme = ThemeLoader.load("classic");
-        view = new GameView(theme,snake, food);
+
+        Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        SnakeRenderer snakeRenderer = new SnakeRenderer(snake, theme.getSnakeHead(), theme.getSnakeBody(), GameConfig.TILE_SIZE);
+        FoodRenderer foodRenderer = new FoodRenderer(food, theme.getFood(), GameConfig.TILE_SIZE);
+        GridRenderer gridRenderer = new GridRenderer(theme.getGridColor(), GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), GameConfig.TILE_SIZE);
+//        UIRenderer uiRenderer = new UIRenderer(gc);
+        UIRenderer uiRenderer = new UIRenderer(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
+
+        view = new GameView(gc, snakeRenderer, foodRenderer, gridRenderer, uiRenderer);
+        view.getRoot().getChildren().add(canvas);
 
         // заменяем корень сцены на игровое поле
         scene.setRoot(view.getRoot());

@@ -1,5 +1,6 @@
 package game.model;
 
+import game.config.GameConfig;
 import game.view.GameView;
 
 import java.util.LinkedList;
@@ -27,7 +28,7 @@ public class Snake {
     }
 
     public boolean checkCollision(Point p) {
-        return p.x() < 0 || p.y() < 0 || p.x() >= GameView.GRID_WIDTH || p.y() >= GameView.GRID_HEIGHT || body.contains(p);
+        return p.x() < 0 || p.y() < 0 || p.x() >= GameConfig.GRID_WIDTH || p.y() >= GameConfig.GRID_HEIGHT || body.contains(p);
     }
 
     public Point getHead() {
