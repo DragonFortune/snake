@@ -17,5 +17,30 @@ public class GameState {
         this.score = score;
         this.view = view;
         this.input = input;
+        this.gameOver = false;
+    }
+
+    public Snake getSnake() {
+        return snake;
+    }
+
+    public Food getFood() {
+        return food;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public GameView getView() {
+        return view;
+    }
+
+    public InputHandler getInput() {
+        return input;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }
