@@ -12,8 +12,6 @@ import game.view.renderers.GridRenderer;
 import game.view.renderers.SnakeRenderer;
 import game.view.renderers.UIRenderer;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
 public class GameController {
@@ -57,17 +55,12 @@ public class GameController {
         // создаём view
         var theme = ThemeLoader.load("classic");
 
-        Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
         SnakeRenderer snakeRenderer = new SnakeRenderer(snake, theme.getSnakeHead(), theme.getSnakeBody(), GameConfig.TILE_SIZE);
         FoodRenderer foodRenderer = new FoodRenderer(food, theme.getFood(), GameConfig.TILE_SIZE);
         GridRenderer gridRenderer = new GridRenderer(theme.getGridColor(), GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), GameConfig.TILE_SIZE);
-//        UIRenderer uiRenderer = new UIRenderer(gc);
         UIRenderer uiRenderer = new UIRenderer(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
 
-        view = new GameView(gc, snakeRenderer, foodRenderer, gridRenderer, uiRenderer);
-        view.getRoot().getChildren().add(canvas);
+        view = new GameView(snakeRenderer, foodRenderer, gridRenderer, uiRenderer);
 
         // заменяем корень сцены на игровое поле
         scene.setRoot(view.getRoot());

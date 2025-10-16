@@ -1,7 +1,6 @@
 package game.model;
 
 import game.config.GameConfig;
-import game.view.GameView;
 
 import java.util.LinkedList;
 
