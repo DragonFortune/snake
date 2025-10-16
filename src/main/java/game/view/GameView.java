@@ -2,6 +2,7 @@ package game.view;
 
 import game.config.GameConfig;
 import game.view.renderers.*;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -16,17 +17,19 @@ public class GameView {
     private final UIRenderer uiRenderer;
     private final RendererManager rendererManager = new RendererManager();
 
-    public GameView(GraphicsContext gc,
-                    SnakeRenderer snakeRenderer,
+    public GameView(SnakeRenderer snakeRenderer,
                     FoodRenderer foodRenderer,
                     GridRenderer gridRenderer,
                     UIRenderer uiRenderer) {
-        this.gc = gc;
+        Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
+        this.gc = canvas.getGraphicsContext2D();
         this.uiRenderer = uiRenderer;
         rendererManager.add(gridRenderer, 0);
         rendererManager.add(foodRenderer, 1);
         rendererManager.add(snakeRenderer, 2);
         rendererManager.add(uiRenderer, 3);
+
+        root.getChildren().add(canvas);
     }
 
     /**
@@ -41,7 +44,6 @@ public class GameView {
         gc.fillRect(0, 0, GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
 
         uiRenderer.updateState(score, highScore, gameOver);
-
         rendererManager.renderAll(gc);
     }
 
