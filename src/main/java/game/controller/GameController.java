@@ -1,16 +1,9 @@
 package game.controller;
 
 import game.config.GameConfig;
-import game.model.Food;
-import game.model.Score;
-import game.model.Snake;
+import game.model.GameState;
 import game.utils.ThemeLoader;
-import game.view.GameView;
 import game.view.GameMenu;
-import game.view.renderers.FoodRenderer;
-import game.view.renderers.GridRenderer;
-import game.view.renderers.SnakeRenderer;
-import game.view.renderers.UIRenderer;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -18,17 +11,16 @@ public class GameController {
 
     private final Scene scene;
 
-    private Snake snake;
-    private Food food;
-    private GameView view;
-    private InputHandler input;
-    private final Score score;
-    private GameLoop gameLoop;
+    private final GameInitializer initializer;
+    private final GameLoopManager loopManager;
+    private final GameLogic logic;
 
-    private boolean gameOver = false;
+    private GameState state;
 
     public GameController(Stage stage) {
-        this.score = new Score();
+        this.initializer = new GameInitializer();
+        this.loopManager = new GameLoopManager();
+        this.logic = new GameLogic();
         // создаём меню
         GameMenu menu = new GameMenu(GameConfig.GRID_WIDTH * GameConfig.TILE_SIZE,
                 GameConfig.GRID_HEIGHT * GameConfig.TILE_SIZE);
@@ -44,69 +36,20 @@ public class GameController {
     }
 
     private void startNewGame() {
-        // создаём модели
-        snake = new Snake();
-        food = new Food();
-        food.spawn(snake);
-        gameOver = false;
-
-        score.reset();
-
-        // создаём view
-        var theme = ThemeLoader.load("classic");
-
-        SnakeRenderer snakeRenderer = new SnakeRenderer(snake, theme.getSnakeHead(), theme.getSnakeBody(), GameConfig.TILE_SIZE);
-        FoodRenderer foodRenderer = new FoodRenderer(food, theme.getFood(), GameConfig.TILE_SIZE);
-        GridRenderer gridRenderer = new GridRenderer(theme.getGridColor(), GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight(), GameConfig.TILE_SIZE);
-        UIRenderer uiRenderer = new UIRenderer(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
-
-        view = new GameView(snakeRenderer, foodRenderer, gridRenderer, uiRenderer);
-
-        // заменяем корень сцены на игровое поле
-        scene.setRoot(view.getRoot());
-
-        // создаём InputHandler на этой сцене
-        input = new InputHandler(scene);
-
-        // создаём и запускаем GameLoop
-        if (gameLoop != null) {
-            gameLoop.stop();
-        }
-
-        gameLoop = new GameLoop(this::update);
-        gameLoop.start();
+        state = initializer.initGame(scene, ThemeLoader.load("classic"));
+        scene.setRoot(state.getView().getRoot());
+        loopManager.start(this::update);
     }
 
     private void update() {
-        if (input == null) return; // защита от NPE
-
-        if (gameOver) {
-            if (input.isRestartPressed()) {
-                startNewGame();
-            }
-            view.render(true, score.getScore(), score.getHighScore());
+        if (state.isGameOver()) {
+            if (state.getInput().isRestartPressed()) startNewGame();
             return;
         }
-
-        var direction = input.getDirection();
-        var head = snake.getHead();
-        var newHead = head.move(direction);
-
-        if (snake.checkCollision(newHead)) {
-            gameOver = true;
-            score.updateHighScore();
-            view.render(true, score.getScore(), score.getHighScore());
-            return;
-        }
-
-        boolean ateFood = newHead.equals(food.getPosition());
-        snake.move(input.getDirection(), food);
-
-        if (ateFood) {
-            score.addPoint(10);
-            food.spawn(snake);
-        }
-
-        view.render(false, score.getScore(), score.getHighScore());
+        logic.update(state);
+        state.getView().render(
+                state.isGameOver(),
+                state.getScore().getScore(),
+                state.getScore().getHighScore());
     }
 }
