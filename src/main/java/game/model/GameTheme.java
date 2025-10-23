@@ -18,9 +18,23 @@ public class GameTheme {
         this.gridColor = gridColor;
     }
 
-    public Image getSnakeHead() { return snakeHead; }
-    public Image getSnakeBody() { return snakeBody; }
-    public Image getFood() { return food; }
-    public Image getBackground() { return background; }
-    public Color getGridColor() { return gridColor; }
+    public Image getSnakeHead() {
+        return snakeHead;
+    }
+
+    public Image getSnakeBody() {
+        return snakeBody;
+    }
+
+    public Image getFood() {
+        return food;
+    }
+
+    public Image getBackground() {
+        return background;
+    }
+
+    public Color getGridColor() {
+        return gridColor;
+    }
 }

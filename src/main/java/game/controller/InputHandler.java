@@ -10,7 +10,7 @@ public class InputHandler {
 
     public InputHandler(Scene scene) {
         scene.setOnKeyPressed(e -> {
-            KeyCode code= e.getCode();
+            KeyCode code = e.getCode();
             if (code == KeyCode.UP && direction != Direction.DOWN) direction = Direction.UP;
             if (code == KeyCode.DOWN && direction != Direction.UP) direction = Direction.DOWN;
             if (code == KeyCode.LEFT && direction != Direction.RIGHT) direction = Direction.LEFT;
@@ -18,8 +18,6 @@ public class InputHandler {
 
             if (code == KeyCode.ENTER) restartPressed = true;
         });
-
-
     }
 
     public Direction getDirection() {

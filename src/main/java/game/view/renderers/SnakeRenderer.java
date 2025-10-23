@@ -5,7 +5,7 @@ import game.model.Snake;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class SnakeRenderer implements Renderer{
+public class SnakeRenderer implements Renderer {
     private final Snake snake;
     private final Image headImage;
     private final Image bodyImage;
@@ -13,7 +13,7 @@ public class SnakeRenderer implements Renderer{
 
     public SnakeRenderer(Snake snake, Image headImage, Image bodyImage, int tileSize) {
         this.snake = snake;
-        this.headImage =headImage;
+        this.headImage = headImage;
         this.bodyImage = bodyImage;
         this.tileSize = tileSize;
     }

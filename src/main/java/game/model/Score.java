@@ -25,11 +25,11 @@ public class Score {
         }
     }
 
-    public  int getScore() {
+    public int getScore() {
         return score;
     }
 
-    public  int getHighScore() {
+    public int getHighScore() {
         return highScore;
     }
 
@@ -40,7 +40,7 @@ public class Score {
     private int loadHighScore() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             return Integer.parseInt(reader.readLine());
-        }catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException e) {
             LOGGER.log(Level.WARNING, "Не удалось загрузить рекорд", e);
             return 0;
         }

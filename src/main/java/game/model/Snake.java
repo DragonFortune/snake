@@ -1,11 +1,9 @@
 package game.model;
 
 import game.config.GameConfig;
-
 import java.util.LinkedList;
 
 public class Snake {
-
     private final LinkedList<Point> body = new LinkedList<>();
     private Direction currentDirection = Direction.RIGHT;
 
@@ -27,7 +25,8 @@ public class Snake {
     }
 
     public boolean checkCollision(Point p) {
-        return p.x() < 0 || p.y() < 0 || p.x() >= GameConfig.GRID_WIDTH || p.y() >= GameConfig.GRID_HEIGHT || body.contains(p);
+        return p.x() < 0 || p.y() < 0 || p.x() >= GameConfig.GRID_WIDTH ||
+                p.y() >= GameConfig.GRID_HEIGHT || body.contains(p);
     }
 
     public Point getHead() {
@@ -38,5 +37,7 @@ public class Snake {
         return body;
     }
 
-    public Direction getDirection() { return currentDirection; }
+    public Direction getDirection() {
+        return currentDirection;
+    }
 }

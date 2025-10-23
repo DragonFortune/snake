@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GameController {
-
     private final Scene scene;
 
     private final GameInitializer initializer;

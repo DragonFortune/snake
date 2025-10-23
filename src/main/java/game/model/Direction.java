@@ -1,10 +1,10 @@
 package game.model;
 
 public enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT;
+UP,
+DOWN,
+LEFT,
+RIGHT;
 
     public boolean isOpposite(Direction other) {
         return switch (this) {

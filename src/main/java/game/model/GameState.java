@@ -23,15 +23,19 @@ public class GameState {
     public Snake getSnake() {
         return snake;
     }
+
     public Food getFood() {
         return food;
     }
+
     public Score getScore() {
         return score;
     }
+
     public GameView getView() {
         return view;
     }
+
     public InputHandler getInput() {
         return input;
     }

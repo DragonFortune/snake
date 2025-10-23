@@ -3,7 +3,6 @@ package game.controller;
 import javafx.animation.AnimationTimer;
 
 public class GameLoop extends AnimationTimer {
-
     private final Runnable updateLogic;
 
     public GameLoop(Runnable updateLogic) {

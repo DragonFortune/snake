@@ -3,7 +3,7 @@ package game.model;
 import game.config.GameConfig;
 
 public record Point(int x, int y) {
-    public Point move (Direction direction) {
+    public Point move(Direction direction) {
         int newX = x;
         int newY = y;
 

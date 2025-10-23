@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-public class UIRenderer implements Renderer{
+public class UIRenderer implements Renderer {
     private final int canvasWidth;
     private final int canvasHeight;
 
@@ -46,7 +46,7 @@ public class UIRenderer implements Renderer{
         }
     }
 
-    private void drawScore (GraphicsContext gc) {
+    private void drawScore(GraphicsContext gc) {
         gc.setFill(Color.WHITE);
         gc.setFont(Font.font(16));
         gc.fillText("Score: " + score, 8, 18);

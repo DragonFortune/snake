@@ -1,10 +1,9 @@
 package game.view.renderers;
 
-import javafx.scene.canvas.GraphicsContext;
-
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.canvas.GraphicsContext;
 
 public class RendererManager {
     private static final Logger LOGGER = Logger.getLogger(RendererManager.class.getName());
@@ -29,7 +28,7 @@ public class RendererManager {
         disabledLayers.remove(layer);
     }
 
-    public void renderAll (GraphicsContext gc) {
+    public void renderAll(GraphicsContext gc) {
         for (Map.Entry<Integer, List<Renderer>> entry : layers.entrySet()) {
             int layer = entry.getKey();
 

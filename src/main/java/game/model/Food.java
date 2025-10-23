@@ -1,12 +1,9 @@
 package game.model;
 
 import game.config.GameConfig;
-import game.view.GameView;
-
 import java.util.Random;
 
 public class Food {
-
     private Point position;
 
     public void spawn(Snake snake) {

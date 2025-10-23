@@ -5,7 +5,7 @@ import game.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class FoodRenderer implements Renderer{
+public class FoodRenderer implements Renderer {
     private final Food food;
     private final Image foodImage;
     private final int tileSize;
