@@ -14,13 +14,13 @@ import javafx.scene.paint.Color;
 public class GameView {
     private final StackPane root = new StackPane();
     private final GraphicsContext gc;
-    private final UIRenderer uiRenderer;
+    private final UiRenderer uiRenderer;
     private final RendererManager rendererManager = new RendererManager();
 
     public GameView(SnakeRenderer snakeRenderer,
                     FoodRenderer foodRenderer,
                     GridRenderer gridRenderer,
-                    UIRenderer uiRenderer) {
+                    UiRenderer uiRenderer) {
         Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
         this.gc = canvas.getGraphicsContext2D();
         this.uiRenderer = uiRenderer;

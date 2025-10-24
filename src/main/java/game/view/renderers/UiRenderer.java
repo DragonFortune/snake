@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-public class UIRenderer implements Renderer {
+public class UiRenderer implements Renderer {
     private final int canvasWidth;
     private final int canvasHeight;
 
@@ -13,7 +13,7 @@ public class UIRenderer implements Renderer {
     private int highScore;
     private boolean gameOver;
 
-    public UIRenderer(int canvasWidth, int canvasHeight) {
+    public UiRenderer(int canvasWidth, int canvasHeight) {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
     }

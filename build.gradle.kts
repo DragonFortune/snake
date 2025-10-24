@@ -58,9 +58,3 @@ checkstyle {
 tasks.withType<Checkstyle> {
     isIgnoreFailures = false
 }
-
-spotless {
-    java {
-        googleJavaFormat()
-    }
-}

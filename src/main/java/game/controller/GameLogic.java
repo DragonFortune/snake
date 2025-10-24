@@ -1,6 +1,10 @@
 package game.controller;
 
-import game.model.*;
+import game.model.Direction;
+import game.model.Food;
+import game.model.GameState;
+import game.model.Point;
+import game.model.Snake;
 
 public class GameLogic {
     public void update(GameState state) {
