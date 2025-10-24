@@ -1,7 +1,11 @@
 package game.view;
 
 import game.config.GameConfig;
-import game.view.renderers.*;
+import game.view.renderers.FoodRenderer;
+import game.view.renderers.GridRenderer;
+import game.view.renderers.RendererManager;
+import game.view.renderers.SnakeRenderer;
+import game.view.renderers.UiRenderer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;

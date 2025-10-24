@@ -12,6 +12,7 @@ public record Point(int x, int y) {
             case DOWN -> newY++;
             case LEFT -> newX--;
             case RIGHT -> newX++;
+            default -> throw new IllegalStateException("Unexpected value: " + direction);
         }
 
         // оборачивание координат по краям
