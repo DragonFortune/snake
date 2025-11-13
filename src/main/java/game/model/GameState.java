@@ -6,14 +6,17 @@ import game.view.GameView;
 public class GameState {
     private final Snake snake;
     private final Food food;
+    private final BonusFood bonusFood;
     private final Score score;
     private final GameView view;
     private final InputHandler input;
     private boolean gameOver;
 
-    public GameState(Snake snake, Food food, Score score, GameView view, InputHandler input) {
+    public GameState(Snake snake, Food food, BonusFood bonusFood,
+                     Score score, GameView view, InputHandler input) {
         this.snake = snake;
         this.food = food;
+        this.bonusFood = bonusFood;
         this.score = score;
         this.view = view;
         this.input = input;
@@ -26,6 +29,10 @@ public class GameState {
 
     public Food getFood() {
         return food;
+    }
+
+    public BonusFood getBonusFood() {
+        return bonusFood;
     }
 
     public Score getScore() {

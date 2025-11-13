@@ -6,6 +6,7 @@ import java.util.LinkedList;
 public class Snake {
     private final LinkedList<Point> body = new LinkedList<>();
     private Direction currentDirection = Direction.RIGHT;
+    private int growSegments = 0;
 
     public Snake() {
         body.add(new Point(10, 10));
@@ -19,13 +20,20 @@ public class Snake {
         Point newHead = getHead().move(currentDirection);
         body.add(0, newHead);
 
-        if (!newHead.equals(food.getPosition())) {
-            body.remove(body.size() - 1);
+        if (!newHead.equals(food.getPosition()) && growSegments == 0) {
+            body.removeLast();
+        } else if (growSegments > 0) {
+            growSegments--;
         }
     }
 
+    public void grow(int segments) {
+        growSegments += segments;
+    }
+
     public boolean checkCollision(Point p) {
-        return p.x() < 0 || p.y() < 0 || p.x() >= GameConfig.GRID_WIDTH ||
+        return p.x() < 0 || p.y() < 0 ||
+                p.x() >= GameConfig.GRID_WIDTH ||
                 p.y() >= GameConfig.GRID_HEIGHT || body.contains(p);
     }
 

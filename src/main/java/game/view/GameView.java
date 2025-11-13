@@ -1,11 +1,7 @@
 package game.view;
 
 import game.config.GameConfig;
-import game.view.renderers.FoodRenderer;
-import game.view.renderers.GridRenderer;
-import game.view.renderers.RendererManager;
-import game.view.renderers.SnakeRenderer;
-import game.view.renderers.UiRenderer;
+import game.view.renderers.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -23,6 +19,7 @@ public class GameView {
 
     public GameView(SnakeRenderer snakeRenderer,
                     FoodRenderer foodRenderer,
+                    BonusFoodRenderer bonusFoodRenderer,
                     GridRenderer gridRenderer,
                     UiRenderer uiRenderer) {
         Canvas canvas = new Canvas(GameConfig.getCanvasWidth(), GameConfig.getCanvasHeight());
@@ -30,9 +27,9 @@ public class GameView {
         this.uiRenderer = uiRenderer;
         rendererManager.add(gridRenderer, 0);
         rendererManager.add(foodRenderer, 1);
+        rendererManager.add(bonusFoodRenderer, 1);
         rendererManager.add(snakeRenderer, 2);
         rendererManager.add(uiRenderer, 3);
-
         root.getChildren().add(canvas);
     }
 
