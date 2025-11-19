@@ -19,10 +19,27 @@ dependencies {
     implementation("org.openjfx:javafx-controls:$javafxVersion:$javafxPlatform")
     implementation("org.openjfx:javafx-graphics:$javafxVersion:$javafxPlatform")
     implementation("org.openjfx:javafx-base:$javafxVersion:$javafxPlatform")
+
+    // JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+
+    // AssertJ (удобные ассерты)
+    testImplementation("org.assertj:assertj-core:3.25.3")
+
+    // Mockito
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 application {
     mainClass.set("game.Main")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<JavaCompile> {
