@@ -18,12 +18,12 @@ public class Snake {
         }
 
         Point newHead = getHead().move(currentDirection);
-        body.add(0, newHead);
+        body.addFirst(newHead);
 
-        if (!newHead.equals(food.getPosition()) && growSegments == 0) {
-            body.removeLast();
-        } else if (growSegments > 0) {
+        if (growSegments > 0) {
             growSegments--;
+        } else {
+            body.removeLast();
         }
     }
 

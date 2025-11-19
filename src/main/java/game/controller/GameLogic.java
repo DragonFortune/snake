@@ -30,15 +30,10 @@ public class GameLogic {
             food.spawn(snake);
         }
 
-        if (bonusFood.isActive()) {
-            for (Point p : bonusFood.getOccupiedCells()) {
-                if (newHead.equals(p)) {
-                    state.getScore().addPoint(BONUS_FOOD_SCORE);
-                    snake.grow(BONUS_GROW);
-                    bonusFood.deactivate();
-                    break;
-                }
-            }
+        if (bonusFood.isActive() && bonusFood.getOccupiedCells().contains(newHead)) {
+            state.getScore().addPoint(BONUS_FOOD_SCORE);
+            snake.grow(BONUS_GROW);
+            bonusFood.deactivate();
         }
     }
 }
