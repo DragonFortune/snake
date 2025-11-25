@@ -45,6 +45,12 @@ public class GameController {
             if (state.getInput().isRestartPressed()) startNewGame();
             return;
         }
+        if (state.getInput().isPausePressed()) state.paused = !state.paused;
+
+        if (state.paused) {
+            return;
+        }
+
         logic.update(state);
         state.getView().render(
                 state.isGameOver(),

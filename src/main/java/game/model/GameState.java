@@ -4,13 +4,15 @@ import game.controller.InputHandler;
 import game.view.GameView;
 
 public class GameState {
+    private boolean gameOver = false;
+    public boolean paused = false;
+
     private final Snake snake;
     private final Food food;
     private final BonusFood bonusFood;
     private final Score score;
     private final GameView view;
     private final InputHandler input;
-    private boolean gameOver;
 
     public GameState(Snake snake, Food food, BonusFood bonusFood,
                      Score score, GameView view, InputHandler input) {
@@ -20,7 +22,6 @@ public class GameState {
         this.score = score;
         this.view = view;
         this.input = input;
-        this.gameOver = false;
     }
 
     public Snake getSnake() {
@@ -45,6 +46,18 @@ public class GameState {
 
     public InputHandler getInput() {
         return input;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public boolean getPaused() {
+        return paused;
     }
 
     public boolean isGameOver() {

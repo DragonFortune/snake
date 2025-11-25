@@ -1,5 +1,6 @@
 package game.controller;
 
+import game.model.GameState;
 import javafx.animation.AnimationTimer;
 
 public class GameLoop extends AnimationTimer {

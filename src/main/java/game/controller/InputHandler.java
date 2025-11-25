@@ -7,16 +7,23 @@ import javafx.scene.input.KeyCode;
 public class InputHandler {
     private Direction direction = Direction.RIGHT;
     private boolean restartPressed = false;
+    private boolean pausePressed = false;
 
     public InputHandler(Scene scene) {
         scene.setOnKeyPressed(e -> {
             KeyCode code = e.getCode();
-            if (code == KeyCode.UP && direction != Direction.DOWN) direction = Direction.UP;
-            if (code == KeyCode.DOWN && direction != Direction.UP) direction = Direction.DOWN;
-            if (code == KeyCode.LEFT && direction != Direction.RIGHT) direction = Direction.LEFT;
-            if (code == KeyCode.RIGHT && direction != Direction.LEFT) direction = Direction.RIGHT;
-
-            if (code == KeyCode.ENTER) restartPressed = true;
+            switch (code) {
+                case UP -> {
+                    if (direction != Direction.DOWN) direction = Direction.UP; }
+                case DOWN -> {
+                    if (direction != Direction.UP) direction = Direction.DOWN; }
+                case LEFT -> {
+                    if (direction != Direction.RIGHT) direction = Direction.LEFT; }
+                case RIGHT -> {
+                    if (direction != Direction.LEFT) direction = Direction.RIGHT; }
+                case ENTER -> restartPressed = true;
+                case ESCAPE -> pausePressed = true;
+            }
         });
     }
 
@@ -24,13 +31,15 @@ public class InputHandler {
         return direction;
     }
 
-    public void setDirection(Direction d) {
-        direction = d;
+    public boolean isPausePressed() {
+        boolean pressed = pausePressed;
+        pausePressed = false;
+        return pressed;
     }
 
     public boolean isRestartPressed() {
         boolean pressed = restartPressed;
-        restartPressed = false; // сброс после чтения
+        restartPressed = false;
         return pressed;
     }
 }

@@ -1,5 +1,7 @@
 package game.controller;
 
+import game.model.GameState;
+
 public class GameLoopManager {
     private GameLoop loop;
 
